@@ -28,4 +28,17 @@ class Auction
     end
     potential_revenue
   end
+
+  def bidders
+    bidders = []
+    @items.each do |item|
+      item.bids.each_key do |attendee|
+        # require 'pry'; binding.pry
+        bidders << attendee.name
+      end
+    end
+    bidders.uniq
+  end
+
+  
 end
