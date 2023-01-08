@@ -20,6 +20,7 @@ RSpec.describe Item do
   describe 'add_bid' do
     it 'adds bids to bids hash' do
       item1.bids
+
       expect(item1.bids).to eq({})
       expected_hash = {
         attendee2 => 20,
@@ -27,6 +28,7 @@ RSpec.describe Item do
       }
       item1.add_bid(attendee2, 20)
       item1.add_bid(attendee1, 22)
+      expect(item1.bids).to eq(expected_hash)
     end
   end
 
@@ -37,6 +39,4 @@ RSpec.describe Item do
       expect(item1.current_high_bid).to eq(22)
     end
   end
-
-  
 end
