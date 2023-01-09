@@ -93,7 +93,48 @@ RSpec.describe Auction do
       item4.add_bid(attendee3, 50)
       item3.add_bid(attendee2, 15)
       
-      expect(auction.bidders).to match_array(["Megan", "Bob", "Mike"])
+      expect(auction.bidders).to match_array([attendee1, attendee2, attendee3])
+    end
+  end
+
+  describe '#bidder_info' do
+    it 'creates a hash of attendees w/ budget and items' do
+      auction.add_item(item1)
+      auction.add_item(item2)
+      auction.add_item(item3)
+      auction.add_item(item4)
+      auction.add_item(item5)
+
+      item1.add_bid(attendee2, 20)
+      item1.add_bid(attendee1, 22)
+      item4.add_bid(attendee3, 50)
+      item3.add_bid(attendee2, 15)
+
+      expected_hash = 
+      {
+        attendee1 =>
+          {
+            :budget => 50,
+            :items => [item1]
+          },
+        attendee2 =>
+          {
+            :budget => 75,
+            :items => [item1, item3]
+          },
+        attendee3 =>
+          {
+            :budget => 100,
+            :items => [item4]
+          }
+      }
+      expect(auction.bidder_info).to match(expected_hash)
+    end
+  end
+
+  describe '#date' do
+    it 'returns a string representation of the current date' do
+      expect(auction.date).to include('2023')
     end
   end
 end

@@ -1,8 +1,12 @@
+require 'date'
+
 class Auction
-  attr_reader :items
+  attr_reader :items,
+              :date
   
   def initialize
     @items = []
+    @date = Date.today.to_s
   end
 
   def add_item(item)
@@ -30,15 +34,33 @@ class Auction
   end
 
   def bidders
-    bidders = []
+    bidders_arr = []
     @items.each do |item|
       item.bids.each_key do |attendee|
-        # require 'pry'; binding.pry
-        bidders << attendee.name
+        bidders_arr << attendee
       end
     end
-    bidders.uniq
+    bidders_arr.uniq
   end
 
-  
+  def bidder_items(bidder)
+    items_for_bidder = []
+    @items.each do |item|
+      item.bids.each_key do |attendee|
+        items_for_bidder << item if attendee == bidder
+      end
+    end
+    items_for_bidder
+  end
+
+  def bidder_info
+    hash = Hash.new {|hash, key| hash[key] = {}}  
+
+    bidders.each do |bidder|
+      hash[bidder]
+      hash[bidder][:budget] = bidder.budget.delete("$").to_i
+      hash[bidder][:items] = bidder_items(bidder)
+    end
+    hash
+  end
 end
